@@ -27,6 +27,7 @@ func ConnectToDatabase() {
 		Payments{},
 		Wallets{},
 		OtherTransaction{},
+		Tokens{},
 	)
 
 	DB = database

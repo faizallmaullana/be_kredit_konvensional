@@ -9,6 +9,7 @@ import "time"
 type Users struct {
 	ID       string `json:"id" gorm:"primary_key"`
 	Phone    string `json:"phone"`
+	Password string `json:"password"`
 	Role     string `json:"role"`
 	IsActive bool   `json:"is_active"`
 }

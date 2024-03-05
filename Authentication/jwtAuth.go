@@ -11,21 +11,21 @@ import (
 
 type MyClaims struct {
 	jwt.StandardClaims
-	Username string `json:"username"`
-	StaffID  string `json:"staff_id"`
-	Role     string `json:"role"`
+	ID    string `json:"id"`
+	Phone string `json:"phone"`
+	Role  string `json:"role"`
 }
 
 var secretKey = []byte("G%3jyF83%?9Bg7,uX;(g-}tug:0n!IFPeJ{7qK!s>@_MGmbl!t/Y7:/j+T|hIZR")
 
-func GenerateToken(username string, staff_id string, role string) (string, error) {
+func GenerateToken(id string, phone string, role string) (string, error) {
 	claims := MyClaims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), // Token expires in 24 hours
 		},
-		Username: username,
-		StaffID:  staff_id,
-		Role:     role,
+		ID:    id,
+		Phone: phone,
+		Role:  role,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -101,10 +101,10 @@ func JWTClaims(tokenString, role string) (gin.H, error) {
 
 		// Return user profile data.
 		return gin.H{
-			"username": claims.Username,
-			"staff_id": claims.StaffID,
-			"role":     claims.Role,
-			"status":   "Authorized",
+			"id":     claims.ID,
+			"phone":  claims.Phone,
+			"role":   claims.Role,
+			"status": "Authorized",
 		}, nil
 	}
 	return gin.H{
