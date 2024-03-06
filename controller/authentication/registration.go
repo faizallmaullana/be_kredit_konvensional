@@ -21,6 +21,14 @@ type InputRegistration struct {
 	Token    int    `json:"token"`
 }
 
+// Algorithm
+// 1. check phone number must unique
+// 2. check password strength
+// 3. validte token
+// 4. write to the db
+// 5. generate jwt token
+// 6. give return value
+
 func Registration(c *gin.Context) {
 	var input InputRegistration
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -41,10 +49,11 @@ func Registration(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid phone number",
 		})
+		return
 	}
 
 	var unique_phone models.Users
-	if err := models.DB.Where(" phone = ? ", input.Phone).First(&unique_phone).Error; err == nil {
+	if err := models.DB.Where(" phone = ? ", phone).First(&unique_phone).Error; err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Phone number already used"})
 		return
 	}
@@ -59,32 +68,6 @@ func Registration(c *gin.Context) {
 		password, _ = controller.HashPassword(input.Password)
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Password strength check failed."})
-		return
-	}
-
-	// write to the database (users and profiles)
-	dbUsers := models.Users{
-		ID:       uuid.New().String(),
-		Password: password,
-		Role:     input.Role,
-		Phone:    phone,
-		IsActive: true,
-	}
-
-	dbProfile := models.Profiles{
-		ID:        uuid.New().String(),
-		IDUser:    dbUsers.ID,
-		Name:      toProperCase(input.Name),
-		CreatedAt: time.Now().UTC().Add(7 * time.Hour),
-	}
-
-	models.DB.Create(&dbUsers)
-	models.DB.Create(&dbProfile)
-
-	// generate authentication token using jwt
-	tokenJWT, err := jwt_auth.GenerateToken(dbUsers.ID, dbUsers.Phone, dbUsers.Role)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating token"})
 		return
 	}
 
@@ -137,6 +120,32 @@ func Registration(c *gin.Context) {
 	CekToken.Token = randomNum
 
 	models.DB.Model(&CekToken).Update(CekToken)
+
+	// write to the database (users and profiles)
+	dbUsers := models.Users{
+		ID:       uuid.New().String(),
+		Password: password,
+		Role:     input.Role,
+		Phone:    phone,
+		IsActive: true,
+	}
+
+	dbProfile := models.Profiles{
+		ID:        uuid.New().String(),
+		IDUser:    dbUsers.ID,
+		Name:      toProperCase(input.Name),
+		CreatedAt: time.Now().UTC().Add(7 * time.Hour),
+	}
+
+	models.DB.Create(&dbUsers)
+	models.DB.Create(&dbProfile)
+
+	// generate authentication token using jwt
+	tokenJWT, err := jwt_auth.GenerateToken(dbUsers.ID, dbUsers.Phone, dbUsers.Role)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating token"})
+		return
+	}
 
 	// return value
 	c.JSON(http.StatusCreated, gin.H{

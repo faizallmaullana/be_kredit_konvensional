@@ -39,7 +39,9 @@ func main() {
 	r.Use(cors.New(corsConfig))
 	fmt.Printf("Port: %s \n", port)
 
+	// Authentication
 	r.POST("/api/v1/kang_kredit/registration", authentication.Registration)
+	r.POST("/api/v1/kang_kredit/login", authentication.LoginResource)
 
 	r.Run(fmt.Sprintf(":%s", port))
 }

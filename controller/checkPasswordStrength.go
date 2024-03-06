@@ -11,7 +11,7 @@ func CheckPasswordStrength(password string) (bool, error) {
 		uppercaseRegex = regexp.MustCompile(`[A-Z]`)
 		lowercaseRegex = regexp.MustCompile(`[a-z]`)
 		digitRegex     = regexp.MustCompile(`[0-9]`)
-		specialRegex   = regexp.MustCompile(`[^a-zA-Z0-9]`)
+		// specialRegex   = regexp.MustCompile(`[^a-zA-Z0-9]`)
 	)
 
 	// Check if password length is at least 8 characters
@@ -35,9 +35,9 @@ func CheckPasswordStrength(password string) (bool, error) {
 	}
 
 	// Check if password contains at least one special character
-	if !specialRegex.MatchString(password) {
-		return false, fmt.Errorf("password must contain at least one special character")
-	}
+	// if !specialRegex.MatchString(password) {
+	// 	return false, fmt.Errorf("password must contain at least one special character")
+	// }
 
 	// Password meets all criteria
 	return true, nil
