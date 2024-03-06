@@ -8,7 +8,7 @@ import "time"
 
 type Wallets struct {
 	ID     string `json:"id" gorm:"primary_key"`
-	Amount int64  `json:"amount"`
+	Amount int    `json:"amount"`
 
 	// foreign key
 	IDUser string `json:"id_user"`
@@ -18,7 +18,7 @@ type Wallets struct {
 type OtherTransaction struct {
 	ID          string `json:"id" gorm:"primary_key"`
 	Transaction string `json:"transaction"`
-	Amount      int64  `json:"amount"`
+	Amount      int    `json:"amount"`
 	IsDebit     string `json:"is_debit"`
 
 	// status

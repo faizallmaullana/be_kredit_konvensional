@@ -31,13 +31,13 @@ func LoginResource(c *gin.Context) {
 	// check existing phone
 	var user models.Users
 	if err := models.DB.Where(" phone = ? ", input.Phone).First(&user).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Phone number is invalid"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Phone number is invalid"})
 		return
 	}
 
 	// pasword validation
 	if !controller.CheckPasswordHash(input.Password, user.Password) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Password is invalid"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Password is invalid"})
 		return
 	}
 
