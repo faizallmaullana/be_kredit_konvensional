@@ -18,6 +18,8 @@ type Credits struct {
 	// foreign key
 	IDCustomer string    `json:"id_customer"`
 	Customer   Customers `json:"customer" gorm:"references:IDCustomer"`
+	IDUser     string    `json:"id_user"`
+	User       Users     `json:"user" gorm:"references:IDUser"`
 
 	// status
 	CreatedAt time.Time `json:"created_at"`

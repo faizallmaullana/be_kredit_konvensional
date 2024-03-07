@@ -7,6 +7,7 @@ import (
 
 	"github.com/faizallmaullana/be_kredit_konvensional/controller/admin"
 	"github.com/faizallmaullana/be_kredit_konvensional/controller/authentication"
+	"github.com/faizallmaullana/be_kredit_konvensional/controller/credits"
 	"github.com/faizallmaullana/be_kredit_konvensional/controller/customer"
 	"github.com/faizallmaullana/be_kredit_konvensional/controller/database"
 	"github.com/faizallmaullana/be_kredit_konvensional/cors"
@@ -40,6 +41,9 @@ func main() {
 	// Authentication
 	r.POST("/api/v1/kang_kredit/registration", authentication.Registration) // registration
 	r.POST("/api/v1/kang_kredit/login", authentication.LoginResource)       // login
+
+	// kreditan baru
+	r.POST("/api/v1/kang_kredit/newcreditcustomer", credits.NewCreditAndCustomer) // new credit customer
 
 	// Customer
 	r.GET("/api/v1/kang_kredit/name/search/:name", customer.FindCustomer) // find a customer by name

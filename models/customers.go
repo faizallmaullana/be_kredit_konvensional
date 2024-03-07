@@ -9,7 +9,8 @@ type Customers struct {
 	ID              string `json:"id" gorm:"primary_key"`
 	Name            string `json:"name"`
 	Phone           string `json:"phone"`
-	RemainingCredit string `json:"remaining_credit"`
+	Address         string `json:"address"`
+	RemainingCredit int    `json:"remaining_credit"`
 	Note            string `json:"note"`
 
 	// foreign key
