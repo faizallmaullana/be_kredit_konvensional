@@ -9,8 +9,9 @@ import "time"
 type Credits struct {
 	ID           string `json:"id" gorm:"primary_key"`
 	Product      string `json:"product"`
-	CapitalPrice string `json:"capital_price"`
-	SellingPrice string `json:"selling_price"`
+	CapitalPrice int    `json:"capital_price"`
+	SellingPrice int    `json:"selling_price"`
+	Cicilan      int    `json:"cicilan"`
 	Periode      string `json:"periode"`
 	PayEvery     string `json:"pay_every"`
 

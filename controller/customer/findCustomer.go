@@ -1,4 +1,4 @@
-package admin
+package customer
 
 import (
 	"net/http"
@@ -8,10 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetToken(c *gin.Context) {
-	// cek authorization
+// find name of customer
+func FindCustomer(c *gin.Context) {
+	name := c.Param("name")
 	tokenString := c.GetHeader("Authorization")
-	profileData, err := jwt_auth.JWTClaims(tokenString, "admin")
+	profileData, err := jwt_auth.JWTClaims(tokenString, "all")
 	if err == nil {
 		if profileData["status"] != "Authorized" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "You are unauthorized to access this feature"})
@@ -22,14 +23,16 @@ func GetToken(c *gin.Context) {
 		return
 	}
 
-	var token models.Tokens
-	if err := models.DB.First(&token).Error; err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+	var customer []models.Customers
+	search := models.DB.Where(" id_user = ? ", profileData["id"])
+
+	if err := search.Where(" name LIKE ? ", "%"+name+"%").Find(&customer).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Customer Not Found"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "success",
-		"token":   token.Token,
+		"message":  "data founded",
+		"customer": customer,
 	})
 }

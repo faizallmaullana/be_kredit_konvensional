@@ -7,6 +7,7 @@ import (
 
 	"github.com/faizallmaullana/be_kredit_konvensional/controller/admin"
 	"github.com/faizallmaullana/be_kredit_konvensional/controller/authentication"
+	"github.com/faizallmaullana/be_kredit_konvensional/controller/customer"
 	"github.com/faizallmaullana/be_kredit_konvensional/controller/database"
 	"github.com/faizallmaullana/be_kredit_konvensional/cors"
 	"github.com/faizallmaullana/be_kredit_konvensional/models"
@@ -37,8 +38,11 @@ func main() {
 	fmt.Printf("Port: %s \n", port)
 
 	// Authentication
-	r.POST("/api/v1/kang_kredit/registration", authentication.Registration)
-	r.POST("/api/v1/kang_kredit/login", authentication.LoginResource)
+	r.POST("/api/v1/kang_kredit/registration", authentication.Registration) // registration
+	r.POST("/api/v1/kang_kredit/login", authentication.LoginResource)       // login
+
+	// Customer
+	r.GET("/api/v1/kang_kredit/name/search/:name", customer.FindCustomer) // find a customer by name
 
 	// admin
 	r.GET("/api/v1/kang_kredit/token", admin.GetToken)
