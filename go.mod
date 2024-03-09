@@ -1,6 +1,6 @@
 module github.com/faizallmaullana/be_kredit_konvensional
 
-go 1.23.0
+go 1.20
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
