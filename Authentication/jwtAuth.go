@@ -21,7 +21,7 @@ var secretKey = []byte("G%3jyF83%?9Bg7,uX;(g-}tug:0n!IFPeJ{7qK!s>@_MGmbl!t/Y7:/j
 func GenerateToken(id string, phone string, role string) (string, error) {
 	claims := MyClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 168).Unix(), // Token expires in 24 hours
+			ExpiresAt: time.Now().Add(time.Minute * 1).Unix(), // Token expires in 24 hours
 		},
 		ID:    id,
 		Phone: phone,
